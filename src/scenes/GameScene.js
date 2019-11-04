@@ -1,4 +1,9 @@
-import nongSpawner from "../utils/Spawner"
+
+import {
+    nongSpawner,
+    nongSheepSpawner
+} from "../utils/Spawner"
+
 
 let enemy, sheep
 let bg, pointerdown
@@ -14,8 +19,9 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('bg', 'images/backgroung.jpg')
         this.load.spritesheet('enemy', 'images/enemy.png', { frameWidth: 582, frameHeight: 691 })
-        // this.load.image('sheep','images/sheep.png')
-        // this.load.image('milk','images/milk.png')
+        this.load.image('sheep','images/sheep.png')
+        this.load.image('milk','images/milk.png')
+        
     }
 
     create() {
@@ -23,11 +29,18 @@ class GameScene extends Phaser.Scene {
         // enemy = this.physics.add.sprite(250, 150, 'enemy').setScale(0.1).setInteractive()
         // enemy.setVelocity(100, 200).setBounce(0.9)
         // enemy.setCollideWorldBounds(true)
+        // mySheep = spawner.nongSheepSpanwer(this);
+        console.group("sheep debugger")
+        setTimeout(() => nongSheepSpawner(this), 1000)
+        setTimeout(() => nongSheepSpawner(this), 2000)
+        console.groupEnd
+        // nongSheepSpawner(this);
+        // sheep = this.add.image(150,450,'sheep').setScale(0.2)
 
-        //sheep = this.add.image(150,450,'sheep').setScale(0.2)
+        //this.input.setDefaultCursor('url(images/Cursor.cur, pointer')
+        
 
-
-        let i = 7
+        // let i = 7
         const nongInterval = setInterval(() => {
             console.warn("Spawned");
             nongSpawner(this)
@@ -81,13 +94,21 @@ class GameScene extends Phaser.Scene {
         //     // })
         // }
 
+        
 
 
         
+        
 
     }
-    update(delta, time){
+    
 
-    }
+        update(delta, time)
+        {
+            
+        }
+
 }
+    
+
     export default GameScene
