@@ -3,17 +3,25 @@ import damageCalculator from './Damage'
 let sheepId=0;
 
 
-export const Milk = function (gs){
+export const milk = function (gs){
     const x = Phaser.Math.Between(0, 600);
     const y = Phaser.Math.Between(0, 900);
     const milk = gs.physics.add.sprite(x, y, 'milk')
     milk.setScale(0.3).setInteractive()
     setTimeout(()=>milk.destroy(),10000)
     milk.on('pointerdown', function (pointer) {
-        console.log(inventory)
-        inventory.push('milk')
+        let inventoryMilk;
+        inventory.wallet.money += 100;
+        inventoryMilk = inventory.items.milk;
+        inventoryMilk = inventoryMilk === undefined ? 1:inventoryMilk+1;
+        inventory.items.milk = inventoryMilk;
+        // try {
+        //     inventory.items.milk.push("milk");
+        // } catch(err){
+        //     inventory.items.milk = 1
+        // }
         console.log('Inventory')
-        console.table(inventory)
+        console.log(inventory)
         milk.destroy()
 
     })
@@ -36,7 +44,7 @@ export const nongSheepSpawner = function (gs){
         if (sheep.hungryMeter === 10) {
             sheep.hungryMeter = 0
             console.log(`Nong sheep no ${sheep.id}: อิ่มแย้ว`);
-            Milk(gs)
+            milk(gs)
         }
         else {
             console.log(`Nong sheep no ${sheep.id} `+
