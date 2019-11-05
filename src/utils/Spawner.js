@@ -1,5 +1,7 @@
 import inventory from './Inventory'
+import damageCalculator from './Damage'
 let sheepId=0;
+
 
 export const Milk = function (gs){
     const x = Phaser.Math.Between(0, 600);
@@ -21,13 +23,13 @@ export const nongSheepSpawner = function (gs){
     const x = Phaser.Math.Between(0, 600);
     const y = Phaser.Math.Between(0, 900);
     const sheep = gs.physics.add.sprite(x, y, 'sheep')
-
     sheep.setScale(0.2).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
-    sheep.setSize(400,-400).setOffset(250,600)
-
-        sheep.id = sheepId++;
+    // sheep.setSize(400,-400).setOffset(250,600)
+    sheep.id = sheepId++;
+    sheep.hp = Phaser.Math.Between(3,10);
     sheep.hungryMeter = 0;
     //console.groupCollapsed(`Nong sheep no ${sheep.id}`)
+    
     sheep.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         sheep.hungryMeter++
@@ -47,7 +49,27 @@ export const nongSheepSpawner = function (gs){
     sheep.on('pointerup', function (pointer) {
         this.clearTint()
     })
+    sheep.on("enemyOverlap", function(data) {
+        const {enemyName, invisibleTime} = data;
+        let damage = 0;
+        this.setTint(0xff0000)
+        switch(enemyName){
+            case "nong":
+                damage = 1;
+                break;
+            default:
+                break;
+        }
+        damageCalculator(sheep, damage);
+        setTimeout(() => {
+            this.clearTint();
+        }, invisibleTime)
+    });
+    sheep.on("enemyOverlapEnd", function() {
+        this.clearTint()
+    });
     console.groupEnd
+    return sheep;
 }
 
 export const nongSpawner = function (gs){
@@ -77,5 +99,6 @@ export const nongSpawner = function (gs){
     enemy.on('pointerup', function (pointer) {
         this.clearTint()
     })
+    return enemy;
 }
 
