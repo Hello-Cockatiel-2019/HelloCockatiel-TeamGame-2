@@ -1,13 +1,15 @@
 import {
     nongSpawner,
-    nongSheepSpawner
+    nongSheepSpawner,
+    nongCowSpawner,
+    nongChickSpawner
 } from "../utils/Spawner"
 
 import damageCalculator from "../utils/Damage"
 import inventory from "../utils/Inventory"
 import {default as qest} from "../utils/Quest";
 
-let enemy, sheep
+let enemy, sheep ,chick ,cow 
 let bg, pointerdown,info,timer,text
 let keeper, menu, shop, quest,main ,Ricefilde
 let killMonster, collectEgg, collectWool, collectMilk;
@@ -23,7 +25,9 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('bg', 'images/GameplayBG.png')
         this.load.spritesheet('enemy', 'images/enemy.png', { frameWidth: 582, frameHeight: 691 })
-        this.load.image('sheep','images/sheep.png')
+        this.load.spritesheet('sheep','images/sheep.png', { frameWidth: 1202, frameHeight: 722 })
+        this.load.spritesheet('chick','images/chick.png', { frameWidth: 1202, frameHeight: 722 })
+        this.load.spritesheet('cow','images/cow.png', { frameWidth: 1202, frameHeight: 722 })
         this.load.image('milk','images/milk.png')
         this.load.image('keeper','images/keeper.png')
         this.load.image('menu','images/Menu.png')
@@ -31,6 +35,8 @@ class GameScene extends Phaser.Scene {
         this.load.image('quest','images/Quest.png')
         this.load.image('main','images/MaintainSign.png')
         this.load.image('Ricefilde','images/Ricefilde.png')
+        this.load.image('wool','images/wool.jpg')
+        this.load.image('egg','images/egg.png')
         
     }
 
@@ -66,12 +72,18 @@ class GameScene extends Phaser.Scene {
         //     clearInterval(nongInterval);
         // },5000)
         const sheeps = this.physics.add.group()
+        const cows = this.physics.add.group()
+        const chicks = this.physics.add.group()
         //const enemys = this.physics.add.group()
-        const spawnSheepEvent = this.time.addEvent({
+        const spawnAnimalEvent = this.time.addEvent({
             delay: 1000,
             callback: function(){
                 const sheep = nongSheepSpawner(this);
+                const cow = nongCowSpawner(this);
+                const chick = nongChickSpawner(this);
                 sheeps.add(sheep);
+                cows.add(cow);
+                chicks.add(chick);
             },
             // callback: function(){
             //     let bullet = this.physics.add.image(bigfire.x, bigfire.y-50,'bullet')
@@ -82,18 +94,20 @@ class GameScene extends Phaser.Scene {
             callbackScope: this,
                 //loop: true,
                 // paused: false,
-            repeat: 2
+            repeat: 4
         })
         const spawnEnemyEvent = this.time.addEvent({
             delay: 1000,
             callback: function(){
                 const enemy = nongSpawner(this);
                 this.physics.add.overlap(enemy, sheeps, this.hitEnemy);
+                this.physics.add.overlap(enemy, cows, this.hitEnemy);
+                this.physics.add.overlap(enemy, chicks, this.hitEnemy);
             },
             callbackScope: this,
                 //loop: true,
                 // paused: false,
-            repeat: 1
+            repeat: 4
         })
 
         // const sprite = this.physics.add.image(400, 300, 'enemy')
@@ -171,17 +185,46 @@ class GameScene extends Phaser.Scene {
         collectMilk = this.add.text(80, 480, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
         //text = this.add.text(80, 330, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
 
+        this.anims.create({
+            key: 'sheepAni',
+            frames: this.anims.generateFrameNumbers('sheep', {
+                start: 0,
+               end: 3
+            }),
+           framerate: 5,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'chickAni',
+            frames: this.anims.generateFrameNumbers('chick', {
+                start: 0,
+               end: 3
+            }),
+           framerate: 5,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'cowAni',
+            frames: this.anims.generateFrameNumbers('cow', {
+                start: 0,
+               end: 2
+            }),
+           framerate: 5,
+            repeat: -1
+        })
 
     }
 
-    hitEnemy(enemy,sheep){
-        let touching = !sheep.body.touching.none;
-        let wasTouching = !sheep.body.wasTouching.none;
+    hitEnemy(enemy,animal){
+        let touching = !animal.body.touching.none;
+        let wasTouching = !animal.body.wasTouching.none;
 
         if (touching && !wasTouching){
-            sheep.emit("enemyOverlap", {enemyName: "nong", invisibleTime: 3000});
+            animal.emit("enemyOverlap", {enemyName: "nong", invisibleTime: 3000});
         } else if (!touching && wasTouching) {
-            sheep.emit("enemyOverlapEnd");
+            animal.emit("enemyOverlapEnd");
         }
     }
 
@@ -194,8 +237,12 @@ class GameScene extends Phaser.Scene {
     }
         update(delta, time)
         {   
+            
             const {status: qs, quests: qests} = qest;
             const gameEnd = this.endGame(this.allQuestStatus(qests));
+            // cow.anims.play('cowAni',true)
+            // chick.anims.play('chickAni',true)
+            // sheeps.anims.play('sheepAni',true)
             // if ( timer === 0)
             // {
             //     return;
