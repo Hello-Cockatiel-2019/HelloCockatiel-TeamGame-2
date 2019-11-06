@@ -3,11 +3,14 @@ import {
     nongSheepSpawner
 } from "../utils/Spawner"
 
-import "../utils/Damage"
 import damageCalculator from "../utils/Damage"
+import inventory from "../utils/Inventory"
+import {default as qest} from "../utils/Quest";
 
 let enemy, sheep
-let bg, pointerdown
+let bg, pointerdown,info,timer,text
+let keeper, menu, shop, quest,main ,Ricefilde
+let killMonster, collectEgg, collectWool, collectMilk;
 
 class GameScene extends Phaser.Scene {
 
@@ -18,16 +21,27 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('bg', 'images/backgroung.jpg')
+        this.load.image('bg', 'images/GameplayBG.png')
         this.load.spritesheet('enemy', 'images/enemy.png', { frameWidth: 582, frameHeight: 691 })
         this.load.image('sheep','images/sheep.png')
         this.load.image('milk','images/milk.png')
+        this.load.image('keeper','images/keeper.png')
+        this.load.image('menu','images/Menu.png')
+        this.load.image('shop','images/Shop.png')
+        this.load.image('quest','images/Quest.png')
+        this.load.image('main','images/MaintainSign.png')
+        this.load.image('Ricefilde','images/Ricefilde.png')
         
     }
 
     create() {
-        bg = this.add.image(300, 900, 'bg')
-        
+        bg = this.add.image(0, 0, 'bg').setOrigin(0,0).setScale(0.5)
+        keeper = this.add.image(1800,200, 'keeper').setOrigin(0,0).setScale(2)
+        quest = this.add.image(0,0, 'quest').setOrigin(0,0).setScale(2)
+        main = this.add.image(500,0, 'main').setOrigin(0,0).setScale(2)
+        shop = this.add.image(1900,0, 'shop').setOrigin(0,0).setScale(2)
+        menu = this.add.image(2150,0, 'menu').setOrigin(0,0).setScale(0.5)
+        Ricefilde = this.add.image(1600,1100, 'Ricefilde').setOrigin(0,0).setScale(2)
         // enemy = this.physics.add.sprite(250, 150, 'enemy').setScale(0.1).setInteractive()
         // enemy.setVelocity(100, 200).setBounce(0.9)
         // enemy.setCollideWorldBounds(true)
@@ -68,7 +82,7 @@ class GameScene extends Phaser.Scene {
             callbackScope: this,
                 //loop: true,
                 // paused: false,
-            repeat: 9
+            repeat: 2
         })
         const spawnEnemyEvent = this.time.addEvent({
             delay: 1000,
@@ -144,6 +158,20 @@ class GameScene extends Phaser.Scene {
         //     // })
         // }
         // this.physics.add.collider(enemys,sheeps,this.hitEnemy)
+        //text
+        
+       // info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#000000' })
+        // const questNames = quests.reduce((arr, obj) => arr.push(obj.questName), []);
+        // const questText = {
+        //     killMonster: this.add.text(80, 330, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+        // }
+        killMonster = this.add.text(80, 330, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+        collectEgg = this.add.text(80, 380, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+        collectWool = this.add.text(80, 430, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+        collectMilk = this.add.text(80, 480, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+        //text = this.add.text(80, 330, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
+
+
     }
 
     hitEnemy(enemy,sheep){
@@ -157,9 +185,29 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+    endGame(allQuestStatus){
+        return allQuestStatus.every(x => x);
+    }
+
+    allQuestStatus(quest){
+        return quest.reduce((arr, obj) => arr.concat([obj.questStatus]), []);
+    }
         update(delta, time)
-        {
-            
+        {   
+            const {status: qs, quests: qests} = qest;
+            const gameEnd = this.endGame(this.allQuestStatus(qests));
+            // if ( timer === 0)
+            // {
+            //     return;
+            // }
+            //info.setText('Time: '  + '\nMilk: '+ inventory.items.milk)
+            killMonster.setText('Kill monster : '+qs.killCount+'/'+5)
+            collectEgg.setText('Collect egg : '+qs.eggCount+'/'+5)                      
+            collectWool.setText('Collect wool : '+qs.woolCount+'/'+5)
+            collectMilk.setText('Collect milk : '+qs.milkCount+'/'+5)
+            if(gameEnd){
+                console.log("The game has ended!");
+            }
         }
 
 }

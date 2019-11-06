@@ -1,7 +1,9 @@
 import inventory from './Inventory'
 import damageCalculator from './Damage'
-let sheepId=0;
+import quest from './Quest'
 
+let sheepId=0;
+// const {status, quests} = quest;
 
 export const milk = function (gs){
     const x = Phaser.Math.Between(0, 600);
@@ -22,6 +24,8 @@ export const milk = function (gs){
         // }
         console.log('Inventory')
         console.log(inventory)
+        quest.quests[3].condition(++quest.status.milkCount);
+        console.log(quest.quests[3])
         milk.destroy()
 
     })
@@ -94,6 +98,8 @@ export const nongSpawner = function (gs){
         this.setTint(0xff0000)
         hp--
         if (hp === 0) {
+            quest.status.killCount++;
+            quest.quests[0].condition(++quest.status.killCount);
             enemy.destroy()
             //enemy.input.off('pointerdown', ClickNuke)
         }
