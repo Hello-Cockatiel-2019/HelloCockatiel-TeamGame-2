@@ -6,10 +6,10 @@ let sheepId=0,cowId=0,chickId=0;
 // const {status, quests} = quest;
 
 const wool = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(500, 1000);
+    const y = Phaser.Math.Between(500, 1000);
     const wool = gs.physics.add.sprite(x, y, 'wool')
-    wool.setScale(0.3).setInteractive()
+    wool.setScale(0.8).setInteractive()
     setTimeout(()=>wool.destroy(),10000)
     wool.on('pointerdown', function (pointer) {
         let inventoryWool;
@@ -32,8 +32,8 @@ const wool = function (gs){
 }
 
 const egg = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(100, 1000);
+    const y = Phaser.Math.Between(1000, 1300);
     const egg = gs.physics.add.sprite(x, y, 'egg')
     egg.setScale(0.3).setInteractive()
     setTimeout(()=>egg.destroy(),10000)
@@ -58,8 +58,8 @@ const egg = function (gs){
 }
 
 const milk = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(1200, 1600);
+    const y = Phaser.Math.Between(500, 1200);
     const milk = gs.physics.add.sprite(x, y, 'milk')
     milk.setScale(0.3).setInteractive()
     setTimeout(()=>milk.destroy(),10000)
@@ -84,11 +84,11 @@ const milk = function (gs){
 }
 
 export const nongCowSpawner = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(1200, 1600);
+    const y = Phaser.Math.Between(500, 1200);
     const cow = gs.physics.add.sprite(x, y, 'cow')
-    cow.setScale(0.2).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
-    // sheep.setSize(400,-400).setOffset(250,600)
+    cow.setScale(0.4).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
+    //cow.setSize(300,-300).setOffset(250,600)
     cow.id = cowId++;
     cow.hp = Phaser.Math.Between(3,10);
     cow.hungryMeter = 0;
@@ -98,7 +98,7 @@ export const nongCowSpawner = function (gs){
     cow.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         cow.hungryMeter++
-        if (cow.hungryMeter === 1) {
+        if (cow.hungryMeter === 10) {
             cow.hungryMeter = 0
             console.log(`Nong cow no ${cow.id}: อิ่มแย้ว`);
             milk(gs)
@@ -138,11 +138,11 @@ export const nongCowSpawner = function (gs){
 }
 
 export const nongChickSpawner = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(100, 1000);
+    const y = Phaser.Math.Between(1000, 1300);
     const chick = gs.physics.add.sprite(x, y, 'chick')
-    chick.setScale(0.2).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
-    // sheep.setSize(400,-400).setOffset(250,600)
+    chick.setScale(0.4).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
+    //chick.setSize(300,-300).setOffset(250,600)
     chick.id = chickId++;
     chick.hp = Phaser.Math.Between(3,10);
     chick.hungryMeter = 0;
@@ -152,7 +152,7 @@ export const nongChickSpawner = function (gs){
     chick.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         chick.hungryMeter++
-        if (chick.hungryMeter === 1) {
+        if (chick.hungryMeter === 10) {
             chick.hungryMeter = 0
             console.log(`Nong chick no ${chick.id}: อิ่มแย้ว`);
             egg(gs)
@@ -192,11 +192,11 @@ export const nongChickSpawner = function (gs){
 }
 
 export const nongSheepSpawner = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(500, 1000);
+    const y = Phaser.Math.Between(500, 1000);
     const sheep = gs.physics.add.sprite(x, y, 'sheep')
-    sheep.setScale(0.2).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
-    // sheep.setSize(400,-400).setOffset(250,600)
+    sheep.setScale(0.5).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
+    //sheep.setSize(400,-400).setOffset(250,600)
     sheep.id = sheepId++;
     sheep.hp = Phaser.Math.Between(3,10);
     sheep.hungryMeter = 0;
@@ -206,7 +206,7 @@ export const nongSheepSpawner = function (gs){
     sheep.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         sheep.hungryMeter++
-        if (sheep.hungryMeter === 1) {
+        if (sheep.hungryMeter === 10) {
             sheep.hungryMeter = 0
             console.log(`Nong sheep no ${sheep.id}: อิ่มแย้ว`);
             wool(gs)
@@ -246,11 +246,11 @@ export const nongSheepSpawner = function (gs){
 }
 
 export const nongSpawner = function (gs){
-    const x = Phaser.Math.Between(0, 600);
-    const y = Phaser.Math.Between(0, 900);
+    const x = Phaser.Math.Between(2400, 2500);
+    const y = Phaser.Math.Between(0, 0);
     let hp = Phaser.Math.Between(2, 10); //ค่า HP
     const enemy = gs.physics.add.sprite(x, y, 'enemy')
-        .setScale(0.1).setInteractive(({ cursor: 'url(images/sword.ani), pointer' }))
+        .setScale(0.25).setInteractive(({ cursor: 'url(images/sword.ani), pointer' }))
     enemy.setVelocity(100, 200).setBounce(0.9)
     enemy.setCollideWorldBounds(true)
     enemy.setSize(500,-500).setOffset(-20,600)

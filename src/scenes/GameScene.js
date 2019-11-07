@@ -35,7 +35,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('quest','images/Quest.png')
         this.load.image('main','images/MaintainSign.png')
         this.load.image('Ricefilde','images/Ricefilde.png')
-        this.load.image('wool','images/wool.jpg')
+        this.load.image('wool','images/wool.png')
         this.load.image('egg','images/egg.png')
         
     }
@@ -94,7 +94,7 @@ class GameScene extends Phaser.Scene {
             callbackScope: this,
                 //loop: true,
                 // paused: false,
-            repeat: 4
+            repeat: 2
         })
         const spawnEnemyEvent = this.time.addEvent({
             delay: 1000,
@@ -174,7 +174,7 @@ class GameScene extends Phaser.Scene {
         // this.physics.add.collider(enemys,sheeps,this.hitEnemy)
         //text
         
-       // info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#000000' })
+        info = this.add.text(800, 120, '', { font: '80px Arial', fill: '#000000' })
         // const questNames = quests.reduce((arr, obj) => arr.push(obj.questName), []);
         // const questText = {
         //     killMonster: this.add.text(80, 330, '', { font: '36px Arial', fill: '#000000',lineSpacing: 50 })
@@ -191,7 +191,7 @@ class GameScene extends Phaser.Scene {
                 start: 0,
                end: 3
             }),
-           framerate: 5,
+           framerate: 1,
             repeat: -1
         })
 
@@ -247,13 +247,12 @@ class GameScene extends Phaser.Scene {
             // {
             //     return;
             // }
-            //info.setText('Time: '  + '\nMilk: '+ inventory.items.milk)
             killMonster.setText('Kill monster : '+qs.killCount+'/'+5)
             collectEgg.setText('Collect egg : '+qs.eggCount+'/'+5)                      
             collectWool.setText('Collect wool : '+qs.woolCount+'/'+5)
             collectMilk.setText('Collect milk : '+qs.milkCount+'/'+5)
             if(gameEnd){
-                console.log("The game has ended!");
+                info.setText('Quest completed!');
             }
         }
 
