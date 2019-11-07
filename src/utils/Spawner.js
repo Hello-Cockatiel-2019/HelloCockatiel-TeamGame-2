@@ -90,7 +90,7 @@ export const nongCowSpawner = function (gs){
     cow.setScale(0.4).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
     //cow.setSize(300,-300).setOffset(250,600)
     cow.id = cowId++;
-    cow.hp = Phaser.Math.Between(3,10);
+    cow.hp = Phaser.Math.Between(10,15);
     cow.hungryMeter = 0;
     cow.anims.play('cowAni',true)
     //console.groupCollapsed(`Nong sheep no ${sheep.id}`)
@@ -98,7 +98,7 @@ export const nongCowSpawner = function (gs){
     cow.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         cow.hungryMeter++
-        if (cow.hungryMeter === 10) {
+        if (cow.hungryMeter === 20) {
             cow.hungryMeter = 0
             console.log(`Nong cow no ${cow.id}: อิ่มแย้ว`);
             milk(gs)
@@ -144,7 +144,7 @@ export const nongChickSpawner = function (gs){
     chick.setScale(0.4).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
     //chick.setSize(300,-300).setOffset(250,600)
     chick.id = chickId++;
-    chick.hp = Phaser.Math.Between(3,10);
+    chick.hp = Phaser.Math.Between(5,15);
     chick.hungryMeter = 0;
     chick.anims.play('chickAni',true)
     //console.groupCollapsed(`Nong sheep no ${sheep.id}`)
@@ -152,7 +152,7 @@ export const nongChickSpawner = function (gs){
     chick.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         chick.hungryMeter++
-        if (chick.hungryMeter === 10) {
+        if (chick.hungryMeter === 20) {
             chick.hungryMeter = 0
             console.log(`Nong chick no ${chick.id}: อิ่มแย้ว`);
             egg(gs)
@@ -198,7 +198,7 @@ export const nongSheepSpawner = function (gs){
     sheep.setScale(0.5).setInteractive(({ cursor: 'url(images/leaf_cursor.cur), pointer' }))
     //sheep.setSize(400,-400).setOffset(250,600)
     sheep.id = sheepId++;
-    sheep.hp = Phaser.Math.Between(3,10);
+    sheep.hp = Phaser.Math.Between(7,15);
     sheep.hungryMeter = 0;
     sheep.anims.play('sheepAni',true)
     //console.groupCollapsed(`Nong sheep no ${sheep.id}`)
@@ -206,7 +206,7 @@ export const nongSheepSpawner = function (gs){
     sheep.on('pointerdown', function (pointer) {
         this.setTint(0x00ff00)
         sheep.hungryMeter++
-        if (sheep.hungryMeter === 10) {
+        if (sheep.hungryMeter === 20) {
             sheep.hungryMeter = 0
             console.log(`Nong sheep no ${sheep.id}: อิ่มแย้ว`);
             wool(gs)
@@ -248,7 +248,7 @@ export const nongSheepSpawner = function (gs){
 export const nongSpawner = function (gs){
     const x = Phaser.Math.Between(2400, 2500);
     const y = Phaser.Math.Between(0, 0);
-    let hp = Phaser.Math.Between(2, 10); //ค่า HP
+    let hp = Phaser.Math.Between(2,10); //ค่า HP
     const enemy = gs.physics.add.sprite(x, y, 'enemy')
         .setScale(0.25).setInteractive(({ cursor: 'url(images/sword.ani), pointer' }))
     enemy.setVelocity(100, 200).setBounce(0.9)

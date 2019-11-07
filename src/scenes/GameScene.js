@@ -97,7 +97,7 @@ class GameScene extends Phaser.Scene {
             repeat: 2
         })
         const spawnEnemyEvent = this.time.addEvent({
-            delay: 1000,
+            delay: 15000,
             callback: function(){
                 const enemy = nongSpawner(this);
                 this.physics.add.overlap(enemy, sheeps, this.hitEnemy);
